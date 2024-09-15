@@ -86,22 +86,29 @@ def create_default_masks():
 
     masks_instances = []
     for mask_data in gray_masks:
-        mask_binary = generate_mask(mask_data["shape"], mask_type="gray")
-        mask = ImageMask(
-            name=mask_data["name"], description=mask_data["description"], mask_data=mask_binary, mask_type="gray"
-        )
-        masks_instances.append(mask)
+        existing_mask = ImageMask.query.filter_by(name=mask_data["name"], mask_type="gray").first()
+        if not existing_mask:
+            mask_binary = generate_mask(mask_data["shape"], mask_type="gray")
+            mask = ImageMask(
+                name=mask_data["name"], description=mask_data["description"], mask_data=mask_binary, mask_type="gray"
+            )
+            masks_instances.append(mask)
 
     for mask_data in rgb_masks:
-        mask_binary = generate_mask(mask_data["shape"], mask_type="rgb")
-        mask = ImageMask(
-            name=mask_data["name"], description=mask_data["description"], mask_data=mask_binary, mask_type="rgb"
-        )
-        masks_instances.append(mask)
+        existing_mask = ImageMask.query.filter_by(name=mask_data["name"], mask_type="rgb").first()
+        if not existing_mask:
+            mask_binary = generate_mask(mask_data["shape"], mask_type="rgb")
+            mask = ImageMask(
+                name=mask_data["name"], description=mask_data["description"], mask_data=mask_binary, mask_type="rgb"
+            )
+            masks_instances.append(mask)
 
-    db.session.add_all(masks_instances)
-    db.session.commit()
-    print("Default masks created and saved to the database.")
+    if masks_instances:
+        db.session.add_all(masks_instances)
+        db.session.commit()
+        print("Default masks created and saved to the database.")
+    else:
+        print("No new masks created. All default masks already exist.")
 
 
 if __name__ == "__main__":

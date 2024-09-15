@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  nginx:
+    image: "nginx:latest"
+    ports:
+      - 80:80
+      - 443:443
+    env_file:
+      - .env
+    volumes:
+      # we read the directories from the .env file
+      - $NGINX_CONF_PATH:/etc/nginx/conf.d/nginx.conf:ro
+      - $NGINX_CERT_PATH_VAR:/var/lib/letsencrypt/
+      - $NGINX_CERT_PATH_ETC:/etc/letsencrypt/
+      - $UPLOADS_PATH:/home/ubuntu/uploads
+      # - -v /var/www/html:/var/www/html
+      # extra_hosts:
+      #   - "docker.host:host-gateway"
+    network_mode: "host"
+networks:
+  main:
