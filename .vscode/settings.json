@@ -1,0 +1,28 @@
+{
+    "editor.formatOnSave": true,
+    "black-formatter.args": [
+        "--config",
+        "${workspaceFolder}/pyproject.toml"
+    ],
+    "black-formatter.path": [
+        "C:\\Users\\Saied-DEV\\.virtualenvs\\Corporatica-assessment-mn0yUhej\\Scripts\\black.exe"
+    ],
+    "flake8.args": [
+        "--config=${workspaceFolder}/.flake8"
+    ],
+    "flake8.path": [
+        "C:\\Users\\Saied-DEV\\.virtualenvs\\Corporatica-assessment-mn0yUhej\\Scripts\\flake8.exe"
+    ],
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "diffEditor.ignoreTrimWhitespace": false,
+        "gitlens.codeLens.symbolScopes": [
+            "!Module"
+        ],
+        "editor.wordBasedSuggestions": "matchingDocuments",
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit",
+            "source.fixAll": "explicit"
+        },
+    }
+}

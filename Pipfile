@@ -1,0 +1,37 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "*"
+flask-sqlalchemy = "*"
+flask-restful = "*"
+pandas = "*"
+pillow = "*"
+scikit-image = "*"
+psycopg2 = "*"
+flask-migrate = "*"
+opencv-python = "*"
+python-dotenv = "*"
+flask-filter = "*"
+werkzeug = "*"
+flask-script = "*"
+marshmallow = "*"
+flask-marshmallow = "*"
+nltk = "*"
+scikit-learn = "*"
+wordcloud = "*"
+tensorflow = "*"
+transformers = {extras = ["tf-cpu"], version = "*"}
+
+[dev-packages]
+black = "*"
+flake8 = "*"
+flake8-flask = "*"
+isort = "*"
+autoflake = "*"
+pre-commit = "*"
+
+[requires]
+python_version = "3.12"
