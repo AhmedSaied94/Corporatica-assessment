@@ -7,6 +7,7 @@ services:
     command: gunicorn --config gunicorn_config.py "app:create_app()"
     ports:
       - "8000:8000"
+      - "3000:3000" # For debugging
     env_file:
       - .env
     depends_on:
