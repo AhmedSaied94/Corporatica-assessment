@@ -16,8 +16,7 @@ exclude = '''
   | \.vscode
   | \.mypy_cache
   | migrations
-  | static
-  | media
+  | uploads
 )/
 '''
 
@@ -32,9 +31,7 @@ profile = "django"
 skip_glob = [
     ".git",
     ".venv",
-    "*/migrations/*",
-    "static",
-    "media",
+    "migrations/*",
     ".cache",
     ".pytest_cache",
     ".vscode",
@@ -44,6 +41,7 @@ skip_glob = [
     ".eggs",
     ".mypy_cache",
     ".serverless",
+    "uploads/*",
 ]
 
 
