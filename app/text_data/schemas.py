@@ -1,5 +1,3 @@
-import time
-
 from marshmallow import Schema, fields
 
 from app.text_data.service import TextService
@@ -34,32 +32,16 @@ class TextAnalysisResponseSchema(Schema):
         return obj.text
 
     def get_sentiment(self, obj: TextService):
-        start = time.perf_counter()
-        result = obj.analyze_sentiment_transformers()
-        end = time.perf_counter()
-        print(f"Time taken for sentiment analysis: {end - start}")
-        return result
+        return obj.analyze_sentiment_transformers()
 
     def get_entities(self, obj: TextService):
-        start = time.perf_counter()
-        result = obj.get_named_entities()
-        end = time.perf_counter()
-        print(f"Time taken for entity recognition: {end - start}")
-        return result
+        return obj.get_named_entities()
 
     def get_keywords(self, obj: TextService):
-        start = time.perf_counter()
-        result = obj.get_keywords()
-        end = time.perf_counter()
-        print(f"Time taken for keyword extraction: {end - start}")
-        return result
+        return obj.get_keywords()
 
     def get_summary(self, obj: TextService):
-        start = time.perf_counter()
-        result = obj.summarize_text()
-        end = time.perf_counter()
-        print(f"Time taken for summarization: {end - start}")
-        return result
+        return obj.summarize_text()
 
     def get_word_count(self, obj: TextService):
         return obj.get_word_count()
@@ -68,11 +50,7 @@ class TextAnalysisResponseSchema(Schema):
         return obj.get_character_count()
 
     def get_sentence_count(self, obj: TextService):
-        start = time.perf_counter()
-        result = obj.get_sentence_count()
-        end = time.perf_counter()
-        print(f"Time taken for sentence count: {end - start}")
-        return result
+        return obj.get_sentence_count()
 
     def get_paragraph_count(self, obj: TextService):
         return obj.get_paragraph_count()

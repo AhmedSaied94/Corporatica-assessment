@@ -1,7 +1,9 @@
 from flask import request
 from flask_restful import Resource, fields, marshal_with, reqparse
+from marshmallow import ValidationError
 from sqlalchemy import Numeric, Text, and_, cast, or_
 from werkzeug.datastructures import FileStorage
+from werkzeug.exceptions import BadRequest
 
 from app.db import db
 from app.helpers import generate_random_filename, secure_filename
@@ -74,7 +76,12 @@ class TabularDataFileResource(Resource):
             filters = request.get_json()
         assert isinstance(filters, dict)
         # Parse the request arguments
-        body = TabularDataFileFilterSchema().load(filters)
+        try:
+            body = TabularDataFileFilterSchema().load(filters)
+        except ValidationError as e:
+            return e.messages, 400
+        except Exception as e:
+            return {"message": str(e)}, 400
 
         # Query the tabular data file by its id
         tabular_data_file = TabularDataFile.query.filter_by(id=tabular_data_file_id).first()
@@ -166,7 +173,12 @@ class TabularDataFileResource(Resource):
         """
 
         # Parse the request arguments
-        body = TabularDataFileUpdateSchema().load(request.get_json())
+        try:
+            body = TabularDataFileUpdateSchema().load(request.get_json())
+        except ValidationError as e:
+            return e.messages, 400
+        except Exception as e:
+            return {"message": str(e)}, 400
 
         # Query the tabular data file by its id
         tabular_data_file = TabularDataFile.query.filter_by(id=tabular_data_file_id).first()
@@ -234,7 +246,12 @@ class NewTabularDataFileResource(Resource):
         parser.add_argument(
             "file", type=FileStorage, location="files", required=True, help="The tabular data file to upload."
         )
-        args = parser.parse_args()
+        try:
+            args = parser.parse_args()
+        except BadRequest as e:
+            return e.data, e.code
+        except Exception as e:
+            return {"message": str(e)}, 400
 
         # Check if the file is allowed
         if not args["file"]:
