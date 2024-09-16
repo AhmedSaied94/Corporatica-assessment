@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    image: flask-corporatica-app
+    image: ${PROD_IMAGE}
     container_name: flask-corporatica-app
     command: gunicorn --config gunicorn_config.py "app:create_app()"
     ports:
