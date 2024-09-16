@@ -35,7 +35,7 @@ FROM python:3.12-slim
 ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
-# Install runtime dependencies (libraries required to run your app)
+# Install runtime dependencies (needed for the application to run)
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     libssl-dev \
