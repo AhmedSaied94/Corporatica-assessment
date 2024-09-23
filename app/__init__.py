@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from flask_migrate import Migrate
 
 from app.db import db
@@ -14,6 +15,10 @@ migrate = Migrate()
 
 def create_app():
     app = Flask(__name__)
+    # allow all originsx
+    CORS(app, resources={r"/*": {"origins": "*"}}, supports_credentials=True, expose_headers=["Content-Disposition"])
+    # allow content-disposition header
+
     app.config.from_object("config.Config")
 
     db.init_app(app)

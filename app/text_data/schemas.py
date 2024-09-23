@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, validate
 
 from app.text_data.service import TextService
 
@@ -60,19 +60,27 @@ class TextAnalysisResponseSchema(Schema):
 
 TextCategorizeRequestSchema = Schema.from_dict(
     {
-        "text": fields.Str(required=True, description="Text to categorize"),
+        "text": fields.Str(required=True, description="Text to categorize", validate=validate.Length(min=50)),
         "categories": fields.Dict(
             keys=fields.Str(),
-            values=fields.List(fields.Str(), required=True, description="List of texts for each category"),
+            values=fields.List(
+                fields.Str(),
+                required=True,
+                description="List of texts for each category",
+                validate=validate.Length(min=1),
+            ),
             required=True,
             description="Categories and their texts",
+            validate=validate.Length(min=1),
         ),
     }
 )
 
 TextVisualizeRequestSchema = Schema.from_dict(
     {
-        "text": fields.Str(required=True, description="Text to visualize"),
-        "texts": fields.List(fields.Str(), required=True, description="List of texts"),
+        "text": fields.Str(required=True, description="Text to visualize", validate=validate.Length(min=50)),
+        "texts": fields.List(fields.Str(), required=True, description="List of texts", validate=validate.Length(min=1)),
     }
 )
+
+TextSimilarityRequestSchema = TextVisualizeRequestSchema

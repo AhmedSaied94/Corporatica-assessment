@@ -21,6 +21,7 @@ scikit-learn = "*"
 wordcloud = "*"
 transformers = {extras = ["torch"], version = "*"}
 gunicorn = "*"
+flask-cors = "*"
 
 [dev-packages]
 black = "*"

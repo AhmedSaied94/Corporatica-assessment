@@ -3,7 +3,12 @@ from flask_restful import Resource, reqparse
 from marshmallow import ValidationError
 from werkzeug.exceptions import BadRequest
 
-from app.text_data.schemas import TextAnalysisResponseSchema, TextCategorizeRequestSchema, TextVisualizeRequestSchema
+from app.text_data.schemas import (
+    TextAnalysisResponseSchema,
+    TextCategorizeRequestSchema,
+    TextSimilarityRequestSchema,
+    TextVisualizeRequestSchema,
+)
 from app.text_data.service import TextService
 
 
@@ -19,6 +24,8 @@ class TextAnalysisResource(Resource):
         except Exception as e:
             return {"message": str(e)}, 400
         text = args["text"]
+        if len(text) < 50:
+            return {"message": "Text must be at least 50 characters long"}, 400
         text_service = TextService(text)
         response = TextAnalysisResponseSchema().dump(text_service)
         return response
@@ -53,6 +60,8 @@ class TextWordCloudResource(Resource):
         except Exception as e:
             return {"message": str(e)}, 400
         text = args["text"]
+        if len(text) < 50:
+            return {"message": "Text must be at least 50 characters long"}, 400
         text_service = TextService(text)
         return send_file(text_service.generate_word_cloud(), download_name="word_cloud.png", as_attachment=True)
 
@@ -72,6 +81,10 @@ class TextSearchResource(Resource):
 
         text = args["text"]
         query = args["query"]
+        if len(text) < 50:
+            return {"message": "Text must be at least 50 characters long"}, 400
+        if len(query) < 3:
+            return {"message": "Query must be at least 3 characters long"}, 400
         text_service = TextService(text)
         return text_service.search_text(query)
 
@@ -79,19 +92,16 @@ class TextSearchResource(Resource):
 class TextSimilarityResource(Resource):
 
     def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument("text", type=str, required=True, help="Text is required")
-        parser.add_argument("text2", type=str, required=True, help="Text is required")
         try:
-            args = parser.parse_args()
+            body = TextSimilarityRequestSchema().load(request.get_json())
         except BadRequest as e:
             return e.data, e.code
         except Exception as e:
             return {"message": str(e)}, 400
-        text = args["text"]
-        text2 = args["text2"]
+        text = body["text"]
+        texts = body["texts"]
         text_service = TextService(text)
-        result = text_service.get_similarity(text2)
+        result = text_service.get_similarity(texts)
         return {"similarity": result}
 
 

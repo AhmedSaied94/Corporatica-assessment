@@ -12,6 +12,19 @@ class Config:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = False
     DEBUG = False
-    MEDIA_FOLDER = os.path.join(os.getcwd(), "uploads")
+    MEDIA_FOLDER = os.path.join(os.getcwd(), os.environ.get("MEDIA_FOLDER", "uploads"))
     MEDIA_URL = "/uploads"
     MEDIA_DIR = "uploads"
+    CORS_ALLOW_HEADERS = [
+        "Content-Type",
+        "Content-Length",
+        "Accept-Encoding",
+        "X-CSRF-Token",
+        "Authorization",
+        "accept",
+        "origin",
+        "Cache-Control",
+        "X-Requested-With",
+    ]
+    CORS_EXPOSE_HEADERS = ["Content-Disposition", "Content-Type", "Content-Length"]
+    CORS_SUPPORTS_CREDENTIALS = True

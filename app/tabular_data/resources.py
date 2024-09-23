@@ -11,6 +11,7 @@ from app.tabular_data.models import TabularDataFile, TabularDataFileHeader, Tabu
 from app.tabular_data.schemas import (
     PaginationSchema,
     TabularDataFileFilterSchema,
+    TabularDataFileHeaderSchema,
     TabularDataFileSchema,
     TabularDataFileUpdateSchema,
 )
@@ -92,7 +93,7 @@ class TabularDataFileResource(Resource):
 
         # Filter the headers of the tabular data file
         with db.session.no_autoflush:
-            order_by = body.get("rows_order_by")
+            order_by = body.get("rows_order_by", "index")
             if order_by.startswith("-"):
                 order_by = order_by[1:]
                 direction = "desc"
@@ -104,7 +105,7 @@ class TabularDataFileResource(Resource):
             else:
                 # Default ordering
                 order_by = getattr(TabularDataFileRow.index, direction)()
-
+            all_headers = TabularDataFileHeader.query.filter_by(tabular_data_file_id=tabular_data_file_id).all()
             if body.get("headers"):
                 tabular_data_file.headers = (
                     TabularDataFileHeader.query.filter(
@@ -164,6 +165,7 @@ class TabularDataFileResource(Resource):
             **TabularDataFileSchema().dump(tabular_data_file),
             "rows_count": len(tabular_data_file.rows),
             "pagination": PaginationSchema().dump(pagination),
+            "all_headers": TabularDataFileHeaderSchema().dump(all_headers, many=True),
         }
 
     # @marshal_with(tabular_data_file_fields)

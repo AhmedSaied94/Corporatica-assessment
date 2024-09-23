@@ -46,6 +46,8 @@ class ImageService:
 
     def convert_to_io(self, image: Image):
         img_io = BytesIO()
+        if self.pil_image.format == "JPEG" and image.mode == "RGBA":
+            image = image.convert("RGB")
         image.save(img_io, format=self.pil_image.format)
         img_io.seek(0)
         return img_io

@@ -152,11 +152,15 @@ class TextService:
 
         return img_io
 
-    def get_similarity(self, text2: str):
+    def get_similarity(self, texts: List[str]) -> List[float]:
+
         vectorizer = TfidfVectorizer(stop_words="english")
-        matrix = vectorizer.fit_transform([self.text, text2])
-        similarity = np.dot(matrix, matrix.T).toarray()
-        return float(similarity[0, 1])
+        similarity_scores = []
+        for text in texts:
+            matrix = vectorizer.fit_transform([self.text, text])
+            similarity = np.dot(matrix, matrix.T).toarray()
+            similarity_scores.append(float(similarity[0, 1]))
+        return similarity_scores
 
     def search_text(self, query: str) -> List[dict]:
         sentences = nltk.sent_tokenize(self.text)
